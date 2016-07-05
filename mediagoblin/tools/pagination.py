@@ -14,13 +14,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import urllib
 import copy
 from math import ceil, floor
 from itertools import count
 from werkzeug.datastructures import MultiDict
 
-from six.moves import zip
+from six.moves import range, zip
+from six.moves.urllib import parse
 
 PAGINATION_DEFAULT_PER_PAGE = 30
 
@@ -86,7 +86,7 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
-        for num in xrange(1, self.pages + 1):
+        for num in range(1, self.pages + 1):
             if num <= left_edge or \
                (num > self.page - left_current - 1 and \
                 num < self.page + right_current) or \
@@ -107,7 +107,7 @@ class Pagination(object):
 
         new_get_params['page'] = page_no
         return "%s?%s" % (
-            base_url, urllib.urlencode(new_get_params))
+            base_url, parse.urlencode(new_get_params))
 
     def get_page_url(self, request, page_no):
         """
